@@ -2,7 +2,7 @@ import React from 'react';
 
 const JoinedEvent = () => {
   return (
-    <div>
+    <div className='pt-18'>
       Joined EAVENT Pages
     </div>
   );

@@ -1,8 +1,7 @@
-import React from 'react';
 
 const ManageEvent = () => {
   return (
-    <div>
+    <div className='pt-18'>
       Manage Event pages
     </div>
   );
