@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -17,8 +18,7 @@ const provider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [UserData, setUserData] = useState(null);
   const [Loading, setLoading] = useState(true);
-
-  // Dark and Light Mode Setup with localStorage
+  
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -68,6 +68,13 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserData(currentUser);
+     axios.post('http://localhost:3000/jwt', {email: currentUser?.email},{
+        withCredentials: true,
+      }).then((data) => {
+        localStorage.setItem('accessToken', data.data.token);
+      }).catch((error) => {
+        console.error("Error fetching JWT:", error);
+     })
       setLoading(false);
     });
     return () => unSubscribe();
@@ -84,6 +91,8 @@ const AuthProvider = ({ children }) => {
     createUser,
     darkMode,
     setDarkMode,
+    //  eventId, 
+    // setEventId,  
   };
 
   return (
