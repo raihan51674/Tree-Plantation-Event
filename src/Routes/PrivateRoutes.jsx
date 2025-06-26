@@ -1,6 +1,7 @@
 import { use } from "react";
 import { Navigate, useLocation } from "react-router";
-import { AuthContext } from "../Authentication/AuthComponents/Context/AuthContext";
+import { AuthContext } from "../Authantication/Context/AuthContext";
+
 
 
 const PrivateRoute = ({children}) => {
@@ -10,6 +11,7 @@ const PrivateRoute = ({children}) => {
   // console.log(location);
   
   if(Loading){
+    
     return <span className="loading loading-spinner text-info"></span>
   }
   if(!UserData){

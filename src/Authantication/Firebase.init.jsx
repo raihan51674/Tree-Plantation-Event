@@ -6,7 +6,13 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration using Vite environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBUjmqLPrTfTIfh5myH4Nc4loHdhCtCXQI",
+  // apiKey: import.meta.env.VITE_apiKey,
+  // authDomain:import.meta.env.VITE_authDomain,
+  // projectId: import.meta.env.VITE_projectId,
+  // storageBucket: import.meta.env.VITE_storageBucket,
+  // messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  // appId: import.meta.env.VITE_appId,
+   apiKey: "AIzaSyBUjmqLPrTfTIfh5myH4Nc4loHdhCtCXQI",
   authDomain: "freelance-task-marketpla-cd9ed.firebaseapp.com",
   projectId: "freelance-task-marketpla-cd9ed",
   storageBucket: "freelance-task-marketpla-cd9ed.firebasestorage.app",

@@ -4,7 +4,7 @@ const features = [
 	{
 		icon: <FaLeaf className="w-8 h-8 text-green-700" />,
 		title: 'Eco Friendly',
-		desc: 'Promoting sustainable tree planting to protect and restore nature’s balance.',
+		desc: 'Promoting sustainable tree planting to protect, restore nature’s balance.',
 	},
 	{
 		icon: <FaSeedling className="w-8 h-8 text-green-700" />,

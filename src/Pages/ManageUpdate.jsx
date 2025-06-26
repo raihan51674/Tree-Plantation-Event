@@ -15,7 +15,9 @@ import {
 import { useLoaderData } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
+
 const ManageUpdate = () => {
+  const BASE_URL = import.meta.env.VITE_URL;
   const updateData = useLoaderData();
   const {
     title,
@@ -54,7 +56,7 @@ const ManageUpdate = () => {
     };
 
     try {
-      const res = await fetch(`http://localhost:3000/addEvent/${_id}`, {
+      const res = await fetch(`${BASE_URL}/addEvent/${_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

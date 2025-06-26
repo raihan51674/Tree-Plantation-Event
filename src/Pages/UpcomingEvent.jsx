@@ -12,12 +12,15 @@ const UpcomingEvents = () => {
   const [allTypes, setAllTypes] = useState([]); // state to store all event types
   const navigate = useNavigate();
 
+  // Get base URL from environment variable
+  const BASE_URL = import.meta.env.VITE_URL;
+
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:3000/addEvent?searchParams=${search}`
+          `${BASE_URL}/addEvent?searchParams=${search}`
         );
         const now = new Date();
         const upcoming = res.data.result.filter((event) =>
@@ -62,7 +65,7 @@ const UpcomingEvents = () => {
           name="title"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search event ..."
+          placeholder="Search title..."
           className="w-full max-w-md px-4 py-2 rounded-lg border border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
         />
         <select

@@ -16,6 +16,7 @@ import { AuthContext } from './AuthContext';
 const provider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
+  const BASE_URL = import.meta.env.VITE_URL;
   const [UserData, setUserData] = useState(null);
   const [Loading, setLoading] = useState(true);
   
@@ -68,7 +69,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserData(currentUser);
-     axios.post('http://localhost:3000/jwt', {email: currentUser?.email},{
+     axios.post(`${BASE_URL}/jwt`, {email: currentUser?.email},{
         withCredentials: true,
       }).then((data) => {
         localStorage.setItem('accessToken', data.data.token);

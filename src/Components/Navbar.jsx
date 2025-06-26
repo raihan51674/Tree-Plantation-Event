@@ -70,6 +70,15 @@ const Navbar = () => {
             <span>Upcoming Events</span>
           </NavLink>
 
+          {/* Dark/Light mode toggle */}
+          <button
+            onClick={toggleTheme}
+            className="px-3 py-2 rounded-lg bg-blue-50 dark:bg-gray-800 text-xl transition hover:bg-blue-100 dark:hover:bg-gray-700"
+            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {darkMode ? '🌙' : '☀️'}
+          </button>
+
           {/* Auth area */}
           {!UserData ? (
             <NavLink
@@ -140,15 +149,6 @@ const Navbar = () => {
               )}
             </div>
           )}
-
-          {/* Dark/Light mode toggle */}
-          <button
-            onClick={toggleTheme}
-            className="ml-2 px-3 py-2 rounded-lg bg-blue-50 dark:bg-gray-800 text-xl transition hover:bg-blue-100 dark:hover:bg-gray-700"
-            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {darkMode ? '🌙' : '☀️'}
-          </button>
         </div>
 
         {/* Mobile toggle */}
@@ -183,6 +183,17 @@ const Navbar = () => {
             <FaFirefoxBrowser />
             <span>Upcoming Events</span>
           </NavLink>
+
+          {/* Dark/Light mode toggle mobile */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold bg-blue-50 dark:bg-gray-800 text-xl transition hover:bg-blue-100 dark:hover:bg-gray-700"
+            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {darkMode ? '🌙' : '☀️'}
+            <span>{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
+          </button>
+
           {/* Auth area mobile */}
           {!UserData ? (
             <NavLink
@@ -236,16 +247,6 @@ const Navbar = () => {
               </button>
             </>
           )}
-
-          {/* Dark/Light mode toggle mobile */}
-          <button
-            onClick={toggleTheme}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold bg-blue-50 dark:bg-gray-800 text-xl transition hover:bg-blue-100 dark:hover:bg-gray-700"
-            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {darkMode ? '🌙' : '☀️'}
-            <span>{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
-          </button>
         </div>
       </div>
     </nav>

@@ -13,6 +13,10 @@ import JoinedEvent from "../Pages/JoinedEvent";
 import ManageEvent from "../Pages/ManageEvent";
 import ManageUpdate from "../Pages/ManageUpdate";
 import UpcomingEvent from "../Pages/UpcomingEvent";
+import PrivateRoute from "./PrivateRoutes";
+// import PrivateRoute from "./PrivateRoute";
+
+const BASE_URL = import.meta.env.VITE_URL;
 
 export const router = createBrowserRouter([
   {
@@ -21,19 +25,33 @@ export const router = createBrowserRouter([
     children :[
       {path:"/", index:true, Component:Home},
       {path:"/upcomingEvents", Component:UpcomingEvent},
-      {path:"/create-event", Component:CreateEvent},
-      {path:"/manage-events", Component:ManageEvent},
+      {path:"/create-event",
+        element:<PrivateRoute><CreateEvent/></PrivateRoute>
+        // Component:CreateEvent
+      },
+      {path:"/manage-events", 
+        // Component:ManageEvent
+        element:<PrivateRoute><ManageEvent/></PrivateRoute>
+      },
       {path:"/joined-events",
-        Component:JoinedEvent},
+        // Component:JoinedEvent
+        element:<PrivateRoute><JoinedEvent/></PrivateRoute>
+      
+      },
       {
       path:"/events/:id",
-      loader : ({params})=>fetch(`http://localhost:3000/addEvent/${params.id}`),
-      Component:EventDetails
-    },
+      loader : ({params})=>fetch(`${BASE_URL}/addEvent/${params.id}`),
+      // Component:EventDetails
+      element:<PrivateRoute><EventDetails/></PrivateRoute>
+      },
+    
+
     {
       path:"/update/:id",
-      loader: ({params}) => fetch(`http://localhost:3000/addEvent/${params.id}`),
-      Component:ManageUpdate },
+      loader: ({params}) => fetch(`${BASE_URL}/addEvent/${params.id}`),
+      Component:ManageUpdate 
+      
+    },
 
     ]
   },

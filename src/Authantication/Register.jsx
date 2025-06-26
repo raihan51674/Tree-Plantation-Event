@@ -2,13 +2,16 @@ import { motion } from 'framer-motion';
 import { useContext, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
 
 const Register = () => {
+  
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordShow, setPasswordShow] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/"
 
   const { createUser, GoogleLogin,setUserData,updateUser } = useContext(AuthContext);
   
@@ -41,7 +44,7 @@ const Register = () => {
         setUserData(user)
        })
 
-        navigate('/')
+        navigate(from, { replace: true })
       })
       .catch((error) => setErrorMessage(error.message));
   };
@@ -51,7 +54,7 @@ const Register = () => {
       .then(() =>
         {
         toast.success('User create successfully');
-        navigate('/')
+        navigate(from, { replace: true })
         })
       
       .catch((error) => 
