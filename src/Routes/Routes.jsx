@@ -58,19 +58,7 @@ export const router = createBrowserRouter([
   {
     path:"*",
     Component: () => <div className="text-3xl text-center mt-10">404 Not Found</div>
-
-  }
-
-
-
-
-
-
-
-
-
-
-
+  },
   {
     path:"/auth",
     Component:AuthRoot,
