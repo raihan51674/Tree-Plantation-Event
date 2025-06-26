@@ -12,12 +12,13 @@ import {
   FaSpinner,
   FaUser,
 } from "react-icons/fa";
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 
 const ManageUpdate = () => {
   const BASE_URL = import.meta.env.VITE_URL;
+  const navigate = useNavigate();
   const updateData = useLoaderData();
   const {
     title,
@@ -73,6 +74,7 @@ const ManageUpdate = () => {
         showConfirmButton: false,
         timer: 1500
       });
+      navigate('/upcomingEvents');
     } catch (error) {
       console.error('Update failed:', error);
     } finally {

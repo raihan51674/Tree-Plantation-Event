@@ -19,8 +19,9 @@ const UpcomingEvents = () => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `${BASE_URL}/addEvent?searchParams=${search}`
+        const res = await axios.get(`${BASE_URL}/addEvent?searchParams=${search}`,{
+          withCredentials: true, // Include credentials for CORS
+        }
         );
         const now = new Date();
         const upcoming = res.data.result.filter((event) =>
