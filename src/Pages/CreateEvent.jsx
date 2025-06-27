@@ -1,4 +1,3 @@
-import axios from "axios";
 import { motion } from "framer-motion";
 import { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
@@ -17,7 +16,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Authantication/Context/AuthContext";
 
-axios.defaults.baseURL = import.meta.env.VITE_URL || "http://localhost:3000";
+// axios.defaults.baseURL = import.meta.env.VITE_URL || "http://localhost:3000";
 
 const eventTypes = [
   "Cleanup",
@@ -28,6 +27,7 @@ const eventTypes = [
 ];
 
 const CreateEvent = () => {
+  const BASE_URL = import.meta.env.VITE_URL;
   const { UserData } = useContext(AuthContext) || {};
   const email = UserData?.email || "";
   const navigate = useNavigate();
@@ -64,7 +64,21 @@ const CreateEvent = () => {
 
     try {
       setLoading(true);
-      await axios.post("/addEvent", eventData);
+      const response = await fetch(`${BASE_URL}/addEvent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+
+        },
+        credentials: "include",
+        body: JSON.stringify(eventData)
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create event.");
+      }
+      const res = await response.json();
+      console.log("Event created successfully:", res);
 
       Swal.fire({
         icon: "success",

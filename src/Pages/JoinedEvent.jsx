@@ -13,6 +13,7 @@ const JoinedEvent = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log("Indide join event")
         // Sort events by EventDate (ascending)
         const sorted = [...(data.result || [])].sort(
           (a, b) => new Date(a.EventDate) - new Date(b.EventDate)
