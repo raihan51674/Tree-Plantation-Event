@@ -14,6 +14,7 @@ import ManageEvent from "../Pages/ManageEvent";
 import ManageUpdate from "../Pages/ManageUpdate";
 import UpcomingEvent from "../Pages/UpcomingEvent";
 import PrivateRoute from "./PrivateRoutes";
+import PagesError from "../Pages/404 Pages/PagesError";
 // import PrivateRoute from "./PrivateRoute";
 
 const BASE_URL = import.meta.env.VITE_URL;
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
   },
   {
     path:"*",
-    Component: () => <div className="text-3xl text-center mt-10">404 Not Found</div>
+    Component: PagesError
   },
   {
     path:"/auth",
