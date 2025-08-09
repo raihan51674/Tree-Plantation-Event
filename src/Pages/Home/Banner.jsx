@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaLeaf, FaTree, FaUsers, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { Link } from "react-router";
+import CountUp from "react-countup";
 
 const slides = [
   {
@@ -23,10 +25,10 @@ const slides = [
 ];
 
 const stats = [
-  { value: "10K+", label: "Trees Planted", icon: <FaTree className="text-3xl" /> },
-  { value: "500+", label: "Volunteers", icon: <FaUsers className="text-3xl" /> },
-  { value: "50+", label: "Events", icon: <FaCalendarAlt className="text-3xl" /> },
-  { value: "25+", label: "Locations", icon: <FaMapMarkerAlt className="text-3xl" /> },
+  { value: 10000, suffix: "+", label: "Trees Planted", icon: <FaTree className="text-3xl" /> },
+  { value: 500, suffix: "+", label: "Volunteers", icon: <FaUsers className="text-3xl" /> },
+  { value: 50, suffix: "+", label: "Events", icon: <FaCalendarAlt className="text-3xl" /> },
+  { value: 25, suffix: "+", label: "Locations", icon: <FaMapMarkerAlt className="text-3xl" /> },
 ];
 
 const BannerWithInfo = () => {
@@ -50,32 +52,27 @@ const BannerWithInfo = () => {
         <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12">
           {/* Left Info Panel */}
           <div className="lg:w-2/5 w-full flex flex-col justify-center text-center lg:text-left">
-            <span className="inline-block px-4 py-2 bg-[#2E7D32] text-white rounded-full text-xs sm:text-sm font-semibold mb-4 shadow-md select-none">
-              Join Our Green Initiative
-            </span>
+            <Link to="/upcomingEvents">
+              <span className="inline-block px-4 py-2 bg-[#2E7D32] text-white rounded-full text-xs sm:text-sm font-semibold mb-4 shadow-md select-none">
+                Join Our Green Initiative
+              </span>
+            </Link>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#2E7D32] dark:text-[#81C784] leading-tight mb-4">
-              Tree Plantation<br />
+              Tree Plantation
+              <br />
               <span className="text-[#4FC3F7] dark:text-[#4FC3F7]">Event Management</span>
             </h1>
             <p className="text-[#1B5E20] dark:text-[#C8E6C9] text-base sm:text-lg md:text-xl leading-relaxed mb-6 max-w-md mx-auto lg:mx-0">
-              Manage and participate in impactful tree plantation events easily.  
-              Join our community to help green the planet — one tree at a time.
+              Manage and participate in impactful tree plantation events easily. Join our community to help green the planet — one tree at a time.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start max-w-md mx-auto lg:mx-0">
-              <button
-                onClick={() => alert("Join the movement clicked!")}
+              <Link
+                to="/upcomingEvents"
                 className="px-6 sm:px-8 py-2 sm:py-3 text-white font-semibold bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] hover:from-[#1B5E20] hover:to-[#2E7D32] rounded-full shadow-lg transition-transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#4FC3F7]"
                 aria-label="Join the tree plantation movement"
               >
                 Join the Movement
-              </button>
-              <button
-                onClick={() => alert("Learn more clicked!")}
-                className="px-6 sm:px-8 py-2 sm:py-3 font-semibold bg-white/90 text-[#2E7D32] hover:bg-white rounded-full shadow-lg transition-transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#4FC3F7] border border-[#2E7D32]"
-                aria-label="Learn more about tree plantation"
-              >
-                Learn More
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -108,20 +105,18 @@ const BannerWithInfo = () => {
                       <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white dark:text-[#E8F5E9] mb-3 md:mb-4 tracking-tight drop-shadow-lg">
                         {heading}
                         <br className="hidden md:block" />
-                        <span className="text-[#4FC3F7] dark:text-[#4FC3F7] drop-shadow-md">
-                          {subheading}
-                        </span>
+                        <span className="text-[#4FC3F7] dark:text-[#4FC3F7] drop-shadow-md">{subheading}</span>
                       </h2>
                       <p className="text-gray-100 dark:text-gray-200 text-sm sm:text-base md:text-lg mb-4 md:mb-6 font-medium tracking-wide max-w-xl mx-auto">
                         {text}
                       </p>
-                      <button
-                        onClick={() => alert("Join the movement clicked!")}
+                      <Link
+                        to="/upcomingEvents"
                         className="px-5 py-2 md:px-8 md:py-3 bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] hover:from-[#1B5E20] hover:to-[#2E7D32] dark:from-[#2E7D32] dark:to-[#1B5E20] dark:hover:from-[#1B5E20] dark:hover:to-[#2E7D32] transition-all text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#4FC3F7]"
                         aria-label="Join the tree plantation movement"
                       >
                         Join the Movement
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -150,16 +145,7 @@ const BannerWithInfo = () => {
               className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 bg-white/40 dark:bg-black/40 hover:bg-[#2E7D32] dark:hover:bg-[#1B5E20] text-[#2E7D32] dark:text-[#81C784] hover:text-white dark:hover:text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 border border-[#4FC3F7] dark:border-[#4FC3F7] focus:outline-none focus:ring-4 focus:ring-[#4FC3F7]"
               aria-label="Previous Slide"
             >
-              <svg
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
+              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
@@ -168,16 +154,7 @@ const BannerWithInfo = () => {
               className="absolute right-4 md:right-5 top-1/2 -translate-y-1/2 bg-white/40 dark:bg-black/40 hover:bg-[#2E7D32] dark:hover:bg-[#1B5E20] text-[#2E7D32] dark:text-[#81C784] hover:text-white dark:hover:text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 border border-[#4FC3F7] dark:border-[#4FC3F7] focus:outline-none focus:ring-4 focus:ring-[#4FC3F7]"
               aria-label="Next Slide"
             >
-              <svg
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
+              <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="9 6 15 12 9 18" />
               </svg>
             </button>
@@ -192,15 +169,12 @@ const BannerWithInfo = () => {
               className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-transform hover:scale-105 border border-[#2E7D32]/20 dark:border-[#81C784]/20"
             >
               <div className="flex flex-col items-center text-center">
-                <div className="text-[#2E7D32] dark:text-[#4FC3F7] mb-3 select-none">
-                  {stat.icon}
-                </div>
+                <div className="text-[#2E7D32] dark:text-[#4FC3F7] mb-3 select-none">{stat.icon}</div>
                 <h3 className="text-3xl font-bold text-[#2E7D32] dark:text-white mb-2">
-                  {stat.value}
+                  <CountUp end={stat.value} duration={2} separator="," />
+                  {stat.suffix}
                 </h3>
-                <p className="text-[#1B5E20] dark:text-[#C8E6C9] font-medium">
-                  {stat.label}
-                </p>
+                <p className="text-[#1B5E20] dark:text-[#C8E6C9] font-medium">{stat.label}</p>
               </div>
             </div>
           ))}

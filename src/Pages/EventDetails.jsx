@@ -1,4 +1,4 @@
-import { CalendarDays, Tag } from "lucide-react";
+import { CalendarDays, Tag, MapPin, Users, Clock, Leaf } from "lucide-react";
 import { useContext, useState } from "react";
 import { useLoaderData } from "react-router";
 import { useNavigate } from "react-router-dom";
@@ -72,81 +72,213 @@ const EventDetails = () => {
   };
 
   return (
-    <section className="pt-17 px-4 min-h-screen bg-gradient-to-br from-[#e0f7fa] via-[#f1f8e9] to-[#e3f2fd] dark:from-[#0f172a] dark:via-[#1e293b] dark:to-[#334155] flex items-center justify-center transition-colors duration-300">
-      {/* Header */}
-      <header className="absolute top-0 left-0 w-full py-10 bg-gradient-to-r from-green-400/80 via-teal-400/80 to-blue-400/80 dark:from-slate-800/90 dark:via-slate-700/90 dark:to-slate-900/90 backdrop-blur-md shadow-lg z-10 transition-colors duration-300">
-        <h1 className="text-5xl pt-15 md:text-6xl font-extrabold text-center bg-gradient-to-r from-green-700 via-teal-700 to-blue-700 dark:from-green-300 dark:via-teal-300 dark:to-blue-300 text-transparent bg-clip-text drop-shadow-lg tracking-tight">
-          {event.title}
-        </h1>
-        <p className="text-center text-lg mt-2 font-medium tracking-wide text-gray-700 dark:text-gray-200">
-          Be part of something impactful{" "}
-          <span className="inline-block animate-bounce">🌱</span>
-        </p>
-      </header>
-
-      {/* Event Card */}
-      <div className="relative z-20 w-full max-w-4xl mt-40 mb-12">
-        <div className="rounded-3xl shadow-2xl bg-white/70 dark:bg-slate-800/80 backdrop-blur-xl border border-white/40 dark:border-slate-700/60 overflow-hidden transition duration-300 hover:shadow-3xl hover:scale-[1.01]">
-          {/* Event Image */}
-          <div className="relative group">
-            <img
-              src={event.thumbnail}
-              alt={event.title}
-              className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-3xl"
-            />
-            <span className="absolute top-4 right-4 bg-white/80 dark:bg-slate-900/80 px-4 py-1 rounded-full shadow text-xs font-semibold text-gray-700 dark:text-gray-200 uppercase tracking-widest">
-              {event.type}
-            </span>
-          </div>
-
-          {/* Event Info */}
-          <div className="p-8 space-y-8">
-            <p className="text-gray-800 dark:text-gray-200 text-lg leading-relaxed font-medium italic border-l-4 border-teal-400 dark:border-teal-600 pl-4 bg-white/60 dark:bg-slate-900/60 py-2">
-              {event.description}
+    <div className="min-h-screen bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] dark:from-[#0a2e1a] dark:to-[#052e16]">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[#2E7D32]/10 dark:bg-[#2E7D32]/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-[#2E7D32] dark:text-green-300 mb-6">
+              {event.title}
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Join us in making the world greener, one tree at a time
             </p>
-
-            {/* Event Details Grid */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <DetailItem
-                icon={<Tag className="text-green-600 dark:text-green-400" />}
-                label="Type"
-                value={event.type}
-              />
-              <DetailItem
-                icon={
-                  <CalendarDays className="text-blue-600 dark:text-blue-400" />
-                }
-                label="Date"
-                value={new Date(event.date).toLocaleDateString()}
-              />
+            <div className="mt-8 flex justify-center">
+              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-[#2E7D32] text-white">
+                <Leaf className="mr-2 h-4 w-4" />
+                {event.type}
+              </span>
             </div>
-            {/* Join Event Button */}
-            <button
-              onClick={handleJoinEvent}
-              disabled={hasJoined}
-              className={`px-10 py-3 text-xl font-bold text-white bg-gradient-to-r from-green-500 via-teal-500 to-blue-500 dark:from-green-700 dark:via-teal-700 dark:to-blue-700 rounded-full shadow-lg transition duration-300 hover:scale-105 hover:from-green-600 hover:to-blue-600 dark:hover:from-green-800 dark:hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-teal-300 dark:focus:ring-teal-700 ${
-                hasJoined ? "opacity-60 cursor-not-allowed" : ""
-              }`}
-            >
-              {hasJoined ? "Joined" : "Join Event"}
-            </button>
           </div>
         </div>
       </div>
-    </section>
+
+      {/* Event Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+          {/* Event Image */}
+          <div className="relative h-64 sm:h-80 md:h-96">
+            <img
+              className="w-full h-full object-cover"
+              src={event.thumbnail}
+              alt={event.title}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 p-6 text-white">
+              <h2 className="text-2xl sm:text-3xl font-bold">{event.title}</h2>
+            </div>
+          </div>
+
+          {/* Event Details */}
+          <div className="p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Left Column */}
+              <div>
+                <h3 className="text-xl font-semibold text-[#2E7D32] dark:text-green-400 mb-4">
+                  About the Event
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {event.description}
+                </p>
+
+                <div className="mt-8">
+                  <h3 className="text-xl font-semibold text-[#2E7D32] dark:text-green-400 mb-4">
+                    Why Participate?
+                  </h3>
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <span className="flex-shrink-0 h-5 w-5 text-[#4FC3F7]">
+                        ✓
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-300">
+                        Combat climate change by increasing green cover
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex-shrink-0 h-5 w-5 text-[#4FC3F7]">
+                        ✓
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-300">
+                        Learn about native plant species and their benefits
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex-shrink-0 h-5 w-5 text-[#4FC3F7]">
+                        ✓
+                      </span>
+                      <span className="ml-2 text-gray-600 dark:text-gray-300">
+                        Connect with like-minded environmental enthusiasts
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div>
+                <div className="bg-[#f8fafc] dark:bg-gray-700 rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-semibold text-[#2E7D32] dark:text-green-400 mb-6">
+                    Event Details
+                  </h3>
+                  <div className="space-y-5">
+                    <DetailItem
+                      icon={<CalendarDays className="text-[#4FC3F7]" />}
+                      label="Date"
+                      value={new Date(event.date).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    />
+                    <DetailItem
+                      icon={<Clock className="text-[#4FC3F7]" />}
+                      label="Time"
+                      value="9:00 AM - 2:00 PM"
+                    />
+                    <DetailItem
+                      icon={<MapPin className="text-[#4FC3F7]" />}
+                      label="Location"
+                      value="Central Park, Green Valley"
+                    />
+                    <DetailItem
+                      icon={<Users className="text-[#4FC3F7]" />}
+                      label="Participants"
+                      value="120+ registered"
+                    />
+                  </div>
+
+                  <div className="mt-8">
+                    <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-3">
+                      What to bring:
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#2E7D32]/10 text-[#2E7D32] dark:bg-green-900/30 dark:text-green-200">
+                        Reusable water bottle
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#2E7D32]/10 text-[#2E7D32] dark:bg-green-900/30 dark:text-green-200">
+                        Sun protection
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#2E7D32]/10 text-[#2E7D32] dark:bg-green-900/30 dark:text-green-200">
+                        Comfortable shoes
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={handleJoinEvent}
+                    disabled={hasJoined}
+                    className={`w-full py-3 px-6 rounded-lg text-lg font-semibold text-white transition-all duration-300 ${
+                      hasJoined
+                        ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
+                        : "bg-[#2E7D32] hover:bg-[#1B5E20] shadow-lg hover:shadow-[#2E7D32]/40"
+                    }`}
+                  >
+                    {hasJoined ? (
+                      <span className="flex items-center justify-center">
+                        <span className="mr-2">✓</span> You're Registered!
+                      </span>
+                    ) : (
+                      "Join This Event"
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Impact Section */}
+      <div className="bg-[#2E7D32]/5 dark:bg-[#052e16] py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-[#2E7D32] dark:text-green-300 mb-6">
+              Our Collective Impact
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12">
+              Together, we're making a difference in our community and the planet
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ImpactStat number="1,200+" label="Trees Planted" />
+            <ImpactStat number="50+" label="Events Organized" />
+            <ImpactStat number="5,000+" label="Volunteers Engaged" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-// Reusable detail item
+// Reusable detail item component
 const DetailItem = ({ icon, label, value }) => (
-  <div className="flex items-center gap-4 text-gray-700 dark:text-gray-200 font-semibold">
-    {icon}
-    <span>
-      {label}:{" "}
-      <span className="font-normal text-gray-600 dark:text-gray-300">
+  <div className="flex items-start">
+    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-[#4FC3F7]/10 flex items-center justify-center text-[#4FC3F7]">
+      {icon}
+    </div>
+    <div className="ml-4">
+      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        {label}
+      </dt>
+      <dd className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
         {value}
-      </span>
-    </span>
+      </dd>
+    </div>
+  </div>
+);
+
+// Impact stat component
+const ImpactStat = ({ number, label }) => (
+  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm text-center">
+    <p className="text-4xl font-bold text-[#2E7D32] dark:text-green-400 mb-2">
+      {number}
+    </p>
+    <p className="text-lg text-gray-600 dark:text-gray-300">{label}</p>
   </div>
 );
 

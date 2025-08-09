@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { FaCalendarAlt, FaEdit, FaTrashAlt, FaTree, FaUsers, FaMapMarkerAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaEdit, FaTrashAlt, FaTree, FaUsers, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Authantication/Context/AuthContext";
@@ -9,8 +9,8 @@ const ManageEvent = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [toast, setToast] = useState(null);
   const { UserData } = useContext(AuthContext);
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchEvents = () => {
     if (!UserData?.email) return;
@@ -22,7 +22,11 @@ const ManageEvent = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data?.result) {
-          setEvents(data.result);
+          // Sort events by date (newest first)
+          const sortedEvents = [...data.result].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setEvents(sortedEvents);
           setError("");
         } else {
           setError("No events found.");
@@ -41,97 +45,179 @@ const ManageEvent = () => {
     fetchEvents();
   }, [UserData?.email]);
 
+  
   const handleDelete = async (id) => {
+  try {
+    // Show confirmation dialog
     const result = await Swal.fire({
       title: "Delete Event?",
-      text: "This will permanently remove the event",
+      html: `
+        <div class="text-left">
+          <p class="text-gray-700 dark:text-gray-200 mb-2">Are you sure you want to delete this tree plantation event?</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">This will permanently remove the event and all associated data.</p>
+        </div>
+      `,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#2E7D32",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Confirm Delete",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
       background: '#f8f9fa',
+      backdrop: `
+        rgba(0,0,0,0.4)
+        url("/images/leaf-fall.gif")
+        left top
+        no-repeat
+      `,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
     });
 
+    // Exit if user cancels
     if (!result.isConfirmed) return;
 
-    try {
-      const res = await fetch(`${BASE_URL}/addEvent/${id}`, {
-        method: "DELETE",
-      });
-      const result = await res.json();
+    // Set loading state
+    setDeletingId(id);
 
-      if (result?.deletedCount) {
-        setEvents((prev) => prev.filter((e) => e._id !== id));
-        setToast({ type: "success", msg: "Event deleted successfully!" });
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your event has been removed.",
-          icon: "success",
-          confirmButtonColor: "#2E7D32",
-        });
-      } else {
-        setToast({ type: "error", msg: "Failed to delete event." });
-        Swal.fire("Error", "Failed to delete event.", "error");
-      }
-    } catch (error) {
-      console.error("Delete error:", error);
-      setToast({ type: "error", msg: "Failed to delete event." });
-      Swal.fire("Error", "Failed to delete event.", "error");
+    // Make API request
+    const res = await fetch(`${BASE_URL}/addEvent/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    // Handle response
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to delete event");
     }
 
-    setTimeout(() => setToast(null), 2500);
-  };
+    const data = await res.json();
+
+    // Check for successful deletion
+    if (data.deletedCount > 0 || data.success) {
+      // Update UI immediately
+      setEvents(prev => prev.filter(e => e._id !== id));
+
+      // Show success message
+      await Swal.fire({
+        title: "Success!",
+        text: "The event has been deleted successfully.",
+        icon: "success",
+        confirmButtonColor: "#2E7D32",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    } else {
+      throw new Error("Event not found or already deleted");
+    }
+  } catch (error) {
+    console.error("Delete error:", error);
+    
+    // Show error message
+    await Swal.fire({
+      title: "Error!",
+      html: `
+        <div class="text-left">
+          <p class="text-gray-700 dark:text-gray-200">Failed to delete event.</p>
+          <p class="text-sm text-red-500 dark:text-red-400 mt-2">${error.message}</p>
+        </div>
+      `,
+      icon: "error",
+      confirmButtonColor: "#d33"
+    });
+  } finally {
+    // Reset loading state
+    setDeletingId(null);
+  }
+};
+  
 
   return (
-    <div className="pt-20 min-h-screen bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40]">
-      {/* Toast Notification */}
-      {toast && (
-        <div
-          className={`fixed top-6 right-6 z-50 px-6 py-3 rounded-lg shadow-lg font-medium text-white transition-all ${
-            toast.type === "success" ? "bg-[#2E7D32]" : "bg-red-500"
-          }`}
-        >
-          {toast.msg}
-        </div>
-      )}
-
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40] pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
+        {/* Header Section */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#2E7D32] dark:text-[#81C784] mb-4">
-            <FaCalendarAlt className="inline-block mr-3 mb-1" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#2E7D32] text-white mb-6 shadow-lg">
+            <FaTree className="text-2xl" />
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-3">
             Manage Your Events
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg text-[#1B5E20] dark:text-[#C8E6C9]">
-            View, edit, or delete your upcoming tree plantation events
+          </h1>
+          <p className="text-lg text-[#1B5E20] dark:text-[#C8E6C9] max-w-2xl mx-auto">
+            Organize and manage all your tree plantation initiatives
           </p>
         </div>
 
-        {/* Events Grid */}
-        {loading ? (
-          <div className="flex justify-center">
-            <div className="animate-pulse flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-[#2E7D32]/20 mb-4"></div>
-              <div className="h-6 w-48 bg-[#2E7D32]/20 rounded mb-2"></div>
-              <div className="h-4 w-64 bg-[#2E7D32]/20 rounded"></div>
+        {/* Stats Card */}
+        <div className="bg-white/90 dark:bg-[#1B5E20]/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-8 border border-[#2E7D32]/20 dark:border-[#81C784]/20">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center gap-4 mb-4 sm:mb-0">
+              <div className="p-3 rounded-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10">
+                <FaCalendarAlt className="text-[#2E7D32] dark:text-[#81C784] text-xl" />
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-[#1B5E20] dark:text-[#C8E6C9]">
+                  Your Events Overview
+                </h3>
+                <p className="text-sm text-[#1B5E20]/80 dark:text-[#C8E6C9]/80">
+                  {events.length} active events
+                </p>
+              </div>
             </div>
+            <Link
+              to="/create-event"
+              className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] text-white font-medium rounded-lg hover:from-[#4FC3F7] hover:to-[#2E7D32] transition-all"
+            >
+              <FaTree /> Create New Event
+            </Link>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white/80 dark:bg-[#1B5E20]/80 rounded-xl shadow-md p-6 h-80 animate-pulse">
+                <div className="h-6 w-3/4 bg-[#2E7D32]/20 dark:bg-[#81C784]/20 rounded mb-4"></div>
+                <div className="h-4 w-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-2"></div>
+                <div className="h-4 w-5/6 bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-2"></div>
+                <div className="h-4 w-2/3 bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-6"></div>
+                <div className="h-10 w-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded"></div>
+              </div>
+            ))}
           </div>
         ) : error ? (
-          <div className="text-center py-12">
-            <div className="text-xl text-red-500 dark:text-red-400 mb-4">{error}</div>
-            <button 
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 rounded-xl shadow-md p-8 text-center">
+            <div className="text-red-500 dark:text-red-400 text-4xl mb-4">
+              <FaTree className="inline-block" />
+            </div>
+            <h3 className="text-xl font-medium text-[#1B5E20] dark:text-[#C8E6C9] mb-2">
+              {error}
+            </h3>
+            <button
               onClick={fetchEvents}
-              className="px-6 py-2 bg-[#2E7D32] text-white rounded-lg hover:bg-[#1B5E20] transition-colors"
+              className="mt-4 px-6 py-2 bg-[#2E7D32] hover:bg-[#1B5E20] text-white font-medium rounded-lg transition-colors"
             >
-              Retry
+              Try Again
             </button>
           </div>
         ) : events.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-xl text-[#1B5E20] dark:text-[#C8E6C9] mb-4">
-              You haven't created any events yet
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 rounded-xl shadow-md p-12 text-center">
+            <div className="text-[#2E7D32] dark:text-[#81C784] text-5xl mb-4">
+              <FaTree className="inline-block" />
             </div>
+            <h3 className="text-xl font-medium text-[#1B5E20] dark:text-[#C8E6C9] mb-2">
+              No Events Found
+            </h3>
+            <p className="text-[#1B5E20]/80 dark:text-[#C8E6C9]/80 mb-6">
+              You haven't created any tree plantation events yet.
+            </p>
             <Link
               to="/create-event"
               className="inline-block px-6 py-3 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] text-white font-medium rounded-lg hover:from-[#4FC3F7] hover:to-[#2E7D32] transition-all"
@@ -140,35 +226,37 @@ const ManageEvent = () => {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <div
                 key={event._id}
-                className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#2E7D32]/20 dark:border-[#81C784]/20 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+                className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#2E7D32]/20 dark:border-[#81C784]/20 hover:shadow-lg transition-all duration-300"
               >
-                {/* Event Image */}
-                <div className="h-48 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] flex items-center justify-center">
+                {/* Event Header */}
+                <div className="h-40 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] flex items-center justify-center relative">
                   <FaTree className="text-6xl text-white/30" />
+                  <span className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium bg-white/90 text-[#2E7D32]">
+                    {event.type || "Plantation"}
+                  </span>
                 </div>
 
                 {/* Event Content */}
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-3">
-                    {event?.title || "Untitled Event"}
+                  <h3 className="text-xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-2 truncate">
+                    {event.title || "Tree Planting Event"}
                   </h3>
-                  <p className="text-[#1B5E20] dark:text-[#C8E6C9] mb-5 line-clamp-3">
-                    {event?.description || "No description provided."}
+                  <p className="text-[#1B5E20] dark:text-[#C8E6C9] mb-4 line-clamp-3">
+                    {event.description || "No description available"}
                   </p>
 
-                  {/* Event Details */}
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center text-[#1B5E20] dark:text-[#C8E6C9]">
                       <FaUsers className="mr-3 text-[#2E7D32] dark:text-[#81C784]" />
-                      <span>{event.participants || 0} Participants</span>
+                      <span>{event.participants || 0} participants</span>
                     </div>
                     <div className="flex items-center text-[#1B5E20] dark:text-[#C8E6C9]">
                       <FaMapMarkerAlt className="mr-3 text-[#2E7D32] dark:text-[#81C784]" />
-                      <span>{event.location || "Location not specified"}</span>
+                      <span className="truncate">{event.location || "Location not specified"}</span>
                     </div>
                   </div>
 
@@ -182,9 +270,20 @@ const ManageEvent = () => {
                     </Link>
                     <button
                       onClick={() => handleDelete(event._id)}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors"
+                      disabled={deletingId === event._id}
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 font-medium rounded-lg transition-colors ${
+                        deletingId === event._id
+                          ? "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
+                          : "bg-red-500 hover:bg-red-600 text-white"
+                      }`}
                     >
-                      <FaTrashAlt /> Delete
+                      {deletingId === event._id ? (
+                        <FaSpinner className="animate-spin" />
+                      ) : (
+                        <>
+                          <FaTrashAlt /> Delete
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>

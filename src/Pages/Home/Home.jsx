@@ -2,6 +2,7 @@ import Banner from "./Banner";
 import Feature from "./Feature";
 import Gallery from "./Gallery";
 import Newsletter from "./Newsletter";
+import Testomonials from "./Testomonials";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Feature />
       <Gallery />
       <Newsletter />
+      <Testomonials></Testomonials>
     </div>
   );
 };

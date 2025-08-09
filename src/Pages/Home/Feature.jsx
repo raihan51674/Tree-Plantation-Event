@@ -92,11 +92,11 @@ const FeatureSection = () => {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <button className="px-8 py-3 bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] hover:from-[#1B5E20] hover:to-[#2E7D32] text-white font-semibold rounded-full shadow-lg transition-all hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#4FC3F7]">
             Explore Our Programs
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* Animation Keyframes */}
