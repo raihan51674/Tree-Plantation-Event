@@ -2,10 +2,10 @@ import { FaEnvelope, FaFacebookF,FaPaperPlane, FaInstagram, FaLinkedinIn, FaMapM
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40] overflow-hidden">
+    <footer className="relative -my-10 bg-gradient-to-b dark:from-[#1B5E20] dark:to-[#004D40] overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#4FC3F7]/10 rounded-full blur-3xl animate-floatSlow" />
+        <div className="absolute -top-20 -left-20 w-64 h-64rounded-full blur-3xl animate-floatSlow" />
         <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#2E7D32]/20 rounded-full blur-3xl animate-floatSlow animation-delay-2000" />
         <FaLeaf className="absolute top-1/4 left-1/4 text-[#2E7D32]/10 dark:text-[#81C784]/10 text-9xl -rotate-12" />
         <FaTree className="absolute bottom-10 right-1/4 text-[#2E7D32]/10 dark:text-[#81C784]/10 text-9xl rotate-6" />

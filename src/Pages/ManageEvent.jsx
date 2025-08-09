@@ -139,7 +139,7 @@ const ManageEvent = () => {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40] pt-20">
+    <div className="min-h-screen  dark:from-[#1B5E20] dark:to-[#004D40] pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="text-center mb-16">

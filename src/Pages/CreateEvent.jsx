@@ -101,7 +101,7 @@ const CreateEvent = () => {
   };
 
   return (
-    <section className="min-h-screen pt-15 bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40] py-12 px-4 sm:px-6">
+    <section className="min-h-screen pt-15  dark:from-[#1B5E20] dark:to-[#004D40] py-12 px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

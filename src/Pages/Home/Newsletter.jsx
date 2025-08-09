@@ -18,11 +18,11 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="relative overflow-hidden py-16 bg-gradient-to-br from-[#2E7D32] to-[#1B5E20] dark:from-[#1B5E20] dark:to-[#004D40]">
+    <section className="relative overflow-hidden py-16 bg-gradient-to-br dark:from-[#1B5E20] dark:to-[#004D40]">
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#4FC3F7]/10 rounded-full blur-3xl animate-floatSlow" />
-        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#2E7D32]/20 rounded-full blur-3xl animate-floatSlow animation-delay-2000" />
+        <div className="absolute -top-20 -left-20 w-64 h-64rounded-full blur-3xl animate-floatSlow" />
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 rounded-full blur-3xl animate-floatSlow animation-delay-2000" />
         <div className="absolute top-1/3 right-1/4 w-56 h-56 bg-[#4FC3F7]/15 rounded-full blur-3xl animate-floatSlow animation-delay-4000" />
       </div>
 

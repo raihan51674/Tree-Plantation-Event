@@ -54,10 +54,10 @@ const features = [
 
 const FeatureSection = () => {
   return (
-    <section className="relative overflow-hidden py-20 bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40]">
+    <section className="relative overflow-hidden py-20   dark:from-[#1B5E20] dark:to-[#004D40]">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-96 h-96 bg-[#4FC3F7]/10 rounded-full blur-3xl animate-floatSlow" />
+        <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full blur-3xl animate-floatSlow" />
         <div className="absolute -bottom-40 -right-20 w-80 h-80 bg-[#2E7D32]/10 rounded-full blur-3xl animate-floatSlow animation-delay-2000" />
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-[#4FC3F7]/15 rounded-full blur-3xl animate-floatSlow animation-delay-4000" />
       </div>

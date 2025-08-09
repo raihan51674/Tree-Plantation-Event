@@ -109,7 +109,7 @@ const Gallery = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40]">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-b  dark:from-[#1B5E20] dark:to-[#004D40]">
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center px-6 py-2 bg-[#2E7D32] text-white rounded-full text-sm font-semibold mb-6 shadow-lg">

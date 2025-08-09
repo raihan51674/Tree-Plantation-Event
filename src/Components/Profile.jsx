@@ -44,7 +44,7 @@ const Profile = () => {
 
   return (
     <Reval>
-      <div className={`relative min-h-screen flex items-center justify-center p-6 overflow-hidden bg-gradient-to-br from-indigo-400 via-purple-300 to-pink-200 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 transition-colors duration-500`}>
+      <div className={`relative min-h-screen flex items-center justify-center p-6 overflow-hidden dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 transition-colors duration-500`}>
         {/* Decorative SVG background */}
         <svg className="absolute -top-32 -left-32 w-[600px] h-[600px] opacity-30 blur-2xl pointer-events-none" viewBox="0 0 600 600">
           <defs>
