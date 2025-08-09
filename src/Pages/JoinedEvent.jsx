@@ -41,7 +41,7 @@ const JoinedEvent = () => {
   }, [userEmail]);
 
   return (
-    <div className="min-h-screen  dark:from-[#1B5E20] dark:to-[#004D40] py-12 px-4 sm:px-6">
+    <div className="min-h-screen pt-15  dark:from-[#1B5E20] dark:to-[#004D40] py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">

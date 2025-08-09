@@ -1,5 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { FaCalendarAlt, FaEdit, FaTrashAlt, FaTree, FaUsers, FaMapMarkerAlt, FaSpinner } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaEdit,
+  FaTrashAlt,
+  FaTree,
+  FaUsers,
+  FaMapMarkerAlt,
+  FaSpinner,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Authantication/Context/AuthContext";
@@ -22,7 +30,6 @@ const ManageEvent = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data?.result) {
-          // Sort events by date (newest first)
           const sortedEvents = [...data.result].sort(
             (a, b) => new Date(b.date) - new Date(a.date)
           );
@@ -45,101 +52,52 @@ const ManageEvent = () => {
     fetchEvents();
   }, [UserData?.email]);
 
-  
   const handleDelete = async (id) => {
-  try {
-    // Show confirmation dialog
-    const result = await Swal.fire({
-      title: "Delete Event?",
-      html: `
-        <div class="text-left">
-          <p class="text-gray-700 dark:text-gray-200 mb-2">Are you sure you want to delete this tree plantation event?</p>
-          <p class="text-sm text-gray-500 dark:text-gray-400">This will permanently remove the event and all associated data.</p>
-        </div>
-      `,
+    const confirmed = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#2E7D32",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it",
-      cancelButtonText: "Cancel",
-      background: '#f8f9fa',
-      backdrop: `
-        rgba(0,0,0,0.4)
-        url("/images/leaf-fall.gif")
-        left top
-        no-repeat
-      `,
-      showClass: {
-        popup: 'animate__animated animate__fadeInDown'
-      },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOutUp'
-      }
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
     });
 
-    // Exit if user cancels
-    if (!result.isConfirmed) return;
+    if (!confirmed.isConfirmed) return;
 
-    // Set loading state
-    setDeletingId(id);
-
-    // Make API request
-    const res = await fetch(`${BASE_URL}/addEvent/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-
-    // Handle response
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to delete event");
-    }
-
-    const data = await res.json();
-
-    // Check for successful deletion
-    if (data.deletedCount > 0 || data.success) {
-      // Update UI immediately
-      setEvents(prev => prev.filter(e => e._id !== id));
-
-      // Show success message
-      await Swal.fire({
-        title: "Success!",
-        text: "The event has been deleted successfully.",
-        icon: "success",
-        confirmButtonColor: "#2E7D32",
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
+    try {
+      setDeletingId(id);
+      const res = await fetch(`${BASE_URL}/addEvent/${id}`, {
+        method: "DELETE",
+        credentials: "include",
       });
-    } else {
-      throw new Error("Event not found or already deleted");
+
+      if (!res.ok) {
+        throw new Error("Failed to delete the event");
+      }
+
+      setEvents((prev) => prev.filter((e) => e._id !== id));
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Your event has been deleted.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message || "Something went wrong!",
+      });
+    } finally {
+      setDeletingId(null);
     }
-  } catch (error) {
-    console.error("Delete error:", error);
-    
-    // Show error message
-    await Swal.fire({
-      title: "Error!",
-      html: `
-        <div class="text-left">
-          <p class="text-gray-700 dark:text-gray-200">Failed to delete event.</p>
-          <p class="text-sm text-red-500 dark:text-red-400 mt-2">${error.message}</p>
-        </div>
-      `,
-      icon: "error",
-      confirmButtonColor: "#d33"
-    });
-  } finally {
-    // Reset loading state
-    setDeletingId(null);
-  }
-};
-  
+  };
 
   return (
-    <div className="min-h-screen  dark:from-[#1B5E20] dark:to-[#004D40] pt-20">
+    <div className="min-h-screen dark:from-[#1B5E20] dark:to-[#004D40] pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="text-center mb-16">
@@ -183,7 +141,10 @@ const ManageEvent = () => {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white/80 dark:bg-[#1B5E20]/80 rounded-xl shadow-md p-6 h-80 animate-pulse">
+              <div
+                key={i}
+                className="bg-white/80 dark:bg-[#1B5E20]/80 rounded-xl shadow-md p-6 h-80 animate-pulse"
+              >
                 <div className="h-6 w-3/4 bg-[#2E7D32]/20 dark:bg-[#81C784]/20 rounded mb-4"></div>
                 <div className="h-4 w-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-2"></div>
                 <div className="h-4 w-5/6 bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-2"></div>
@@ -232,13 +193,21 @@ const ManageEvent = () => {
                 key={event._id}
                 className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#2E7D32]/20 dark:border-[#81C784]/20 hover:shadow-lg transition-all duration-300"
               >
-                {/* Event Header */}
-                <div className="h-40 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] flex items-center justify-center relative">
-                  <FaTree className="text-6xl text-white/30" />
-                  <span className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium bg-white/90 text-[#2E7D32]">
-                    {event.type || "Plantation"}
-                  </span>
-                </div>
+                {/* Event Image */}
+                {event.thumbnail ? (
+                  <img
+                    src={event.thumbnail}
+                    alt={event.title || "Event Thumbnail"}
+                    className="w-full h-40 object-cover"
+                  />
+                ) : (
+                  <div className="h-40 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] flex items-center justify-center relative">
+                    <FaTree className="text-6xl text-white/30" />
+                    <span className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium bg-white/90 text-[#2E7D32]">
+                      {event.type || "Plantation"}
+                    </span>
+                  </div>
+                )}
 
                 {/* Event Content */}
                 <div className="p-6">
@@ -252,11 +221,13 @@ const ManageEvent = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center text-[#1B5E20] dark:text-[#C8E6C9]">
                       <FaUsers className="mr-3 text-[#2E7D32] dark:text-[#81C784]" />
-                      <span>{event.participants || 0} participants</span>
+                      <span>{event.participantsLimit || 0} participants</span>
                     </div>
                     <div className="flex items-center text-[#1B5E20] dark:text-[#C8E6C9]">
                       <FaMapMarkerAlt className="mr-3 text-[#2E7D32] dark:text-[#81C784]" />
-                      <span className="truncate">{event.location || "Location not specified"}</span>
+                      <span className="truncate">
+                        {event.location || "Location not specified"}
+                      </span>
                     </div>
                   </div>
 
