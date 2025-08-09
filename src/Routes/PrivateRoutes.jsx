@@ -4,7 +4,10 @@ import { AuthContext } from "../Authantication/Context/AuthContext";
 
 
 
+
+
 const PrivateRoute = ({children}) => {
+  console.log("Inside the private route")
   const {UserData,Loading}=use(AuthContext)
   
   const location =useLocation()

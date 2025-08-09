@@ -1,90 +1,152 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { FaCalendarAlt,FaTree, FaCheckCircle, FaLeaf, FaUsers } from "react-icons/fa";
 import { AuthContext } from "../Authantication/Context/AuthContext";
+import { use } from "react";
 
 const JoinedEvent = () => {
   const BASE_URL = import.meta.env.VITE_URL;
-  const [data, setData] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { UserData } = use(AuthContext);
   const userEmail = UserData?.email;
 
   useEffect(() => {
-    fetch(`${BASE_URL}/joinEvent?email=${userEmail}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Indide join event")
-        // Sort events by EventDate (ascending)
-        const sorted = [...(data.result || [])].sort(
-          (a, b) => new Date(a.EventDate) - new Date(b.EventDate)
-        );
-        setData(sorted);
-      })
-      .catch((error) => {
+    const fetchJoinedEvents = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/joinEvent?email=${userEmail}`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+        
+        if (data.result) {
+          // Sort events by date (newest first)
+          const sortedEvents = [...data.result].sort(
+            (a, b) => new Date(b.EventDate) - new Date(a.EventDate)
+          );
+          setEvents(sortedEvents);
+        } else {
+          setEvents([]);
+        }
+      } catch (error) {
         console.error("Error fetching joined events:", error);
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userEmail) {
+      fetchJoinedEvents();
+    }
   }, [userEmail]);
 
   return (
-    <div className="min-h-screen py-10 px-2 md:px-8 transition-colors duration-300 bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-          <div>
-            <h2 className="text-2xl pt-10 md:text-3xl font-bold mb-2 text-gray-800 dark:text-gray-100">
-              Joined Events
-            </h2>
-            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
-              All events you have joined are listed below.
-            </p>
+    <div className="min-h-screen bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40] py-12 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#2E7D32] text-white mb-6 shadow-lg">
+            <FaCheckCircle className="text-2xl" />
           </div>
-          <div className="mt-4 md:mt-0 flex items-center gap-4">
-            <span className="inline-block rounded-full px-6 py-2 text-lg font-semibold shadow-lg bg-gradient-to-r from-purple-500 to-blue-500 text-white dark:from-purple-700 dark:to-blue-700">
-              {data.length} Joined
-            </span>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-3">
+            Your Joined Events
+          </h1>
+          <p className="text-lg text-[#1B5E20] dark:text-[#C8E6C9] max-w-2xl mx-auto">
+            All the tree plantation events you've registered for
+          </p>
+        </div>
+
+        {/* Stats Card */}
+        <div className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl shadow-md p-6 mb-8 border border-[#2E7D32]/20 dark:border-[#81C784]/20">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center gap-4 mb-4 sm:mb-0">
+              <div className="p-3 rounded-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10">
+                <FaLeaf className="text-[#2E7D32] dark:text-[#81C784] text-xl" />
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-[#1B5E20] dark:text-[#C8E6C9]">
+                  Your Participation
+                </h3>
+                <p className="text-sm text-[#1B5E20]/80 dark:text-[#C8E6C9]/80">
+                  Contributing to a greener planet
+                </p>
+              </div>
+            </div>
+            <div className="bg-[#2E7D32] dark:bg-[#4FC3F7] text-white px-6 py-2 rounded-full font-bold shadow-lg">
+              {events.length} Events Joined
+            </div>
           </div>
         </div>
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {data.length > 0 ? (
-            data.map((event) => (
+
+        {/* Events Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white/80 dark:bg-[#1B5E20]/80 rounded-xl shadow-md p-6 h-64 animate-pulse">
+                <div className="h-6 w-3/4 bg-[#2E7D32]/20 dark:bg-[#81C784]/20 rounded mb-4"></div>
+                <div className="h-4 w-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-2"></div>
+                <div className="h-4 w-5/6 bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-2"></div>
+                <div className="h-4 w-2/3 bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded mb-6"></div>
+                <div className="h-8 w-full bg-[#2E7D32]/10 dark:bg-[#81C784]/10 rounded"></div>
+              </div>
+            ))}
+          </div>
+        ) : events.length === 0 ? (
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl shadow-md p-12 text-center">
+            <div className="text-[#2E7D32] dark:text-[#81C784] text-5xl mb-4">
+              <FaLeaf className="inline-block" />
+            </div>
+            <h3 className="text-xl font-medium text-[#1B5E20] dark:text-[#C8E6C9] mb-2">
+              No Events Joined Yet
+            </h3>
+            <p className="text-[#1B5E20]/80 dark:text-[#C8E6C9]/80 mb-6">
+              You haven't joined any tree plantation events yet.
+            </p>
+            <a
+              href="/upcomingEvents"
+              className="inline-block px-6 py-2 bg-[#2E7D32] hover:bg-[#1B5E20] text-white font-medium rounded-lg transition-colors"
+            >
+              Browse Upcoming Events
+            </a>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
               <div
                 key={event._id}
-                className="rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 p-6 flex flex-col justify-between border bg-white border-purple-100 dark:bg-gray-800 dark:border-gray-700"
+                className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#2E7D32]/20 dark:border-[#81C784]/20 hover:shadow-lg transition-all duration-300"
               >
-                <div>
-                  <h3 className="text-xl font-bold mb-2 truncate text-purple-700 dark:text-purple-300">
-                    {event.title}
-                  </h3>
-                  <p className="text-sm mb-1 text-gray-500 dark:text-gray-300">
-                    <span className="font-medium text-gray-700 dark:text-gray-200">
-                      User:
-                    </span>{" "}
-                    {event.userEmail}
-                  </p>
-                  <p className="text-xs mb-2 text-gray-400 dark:text-gray-500">
-                    <span className="font-medium text-gray-600 dark:text-gray-300">
-                      Event ID:
-                    </span>{" "}
-                    {event.eventId}
-                  </p>
+                <div className="h-40 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] flex items-center justify-center">
+                  <FaTree className="text-6xl text-white/30" />
                 </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="inline-block rounded-full px-3 py-1 text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200">
-                    Joined: {event.EventDate}
-                  </span>
-                  <span className="inline-block rounded-full px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
-                    Status: Joined
-                  </span>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-2 truncate">
+                    {event.title || "Tree Plantation Event"}
+                  </h3>
+                  <div className="flex items-center gap-2 text-[#1B5E20] dark:text-[#C8E6C9] mb-3">
+                    <FaUsers className="text-[#2E7D32] dark:text-[#81C784]" />
+                    <span>Organized by: {event.userEmail || "Community"}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[#1B5E20] dark:text-[#C8E6C9] mb-4">
+                    <FaCalendarAlt className="text-[#2E7D32] dark:text-[#81C784]" />
+                    <span>Joined on: {new Date(event.EventDate).toLocaleDateString()}</span>
+                  </div>
+                  <div className="mt-4 flex justify-between items-center">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#2E7D32]/10 dark:bg-[#81C784]/10 text-[#2E7D32] dark:text-[#81C784]">
+                      Confirmed
+                    </span>
+                    <a
+                      href={`/event-details/${event.eventId}`}
+                      className="text-sm font-medium text-[#2E7D32] dark:text-[#81C784] hover:underline"
+                    >
+                      View Details
+                    </a>
+                  </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-16">
-              <p className="text-lg font-medium text-gray-400 dark:text-gray-500">
-                No joined events found.
-              </p>
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

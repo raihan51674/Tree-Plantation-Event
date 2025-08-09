@@ -8,42 +8,47 @@ const UpcomingEvents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const [eventType, setEventType] = useState(""); // new state for event type filter
-  const [allTypes, setAllTypes] = useState([]); // state to store all event types
+  const [eventType, setEventType] = useState("");
+  const [allTypes, setAllTypes] = useState([]);
   const navigate = useNavigate();
 
-  // Get base URL from environment variable
   const BASE_URL = import.meta.env.VITE_URL;
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(`${BASE_URL}/addEvent?searchParams=${search}`,{
-          withCredentials: true, // Include credentials for CORS
+    const delayDebounce = setTimeout(() => {
+      const fetchEvents = async () => {
+        setLoading(true);
+        try {
+          const res = await axios.get(
+            `${BASE_URL}/addEvent?searchParams=${search}`,
+            { withCredentials: true }
+          );
+
+          const now = new Date();
+          const upcoming = res.data.result.filter((event) =>
+            isAfter(parseISO(event.date), now)
+          );
+          setEvents(upcoming);
+
+          const types = Array.from(
+            new Set(upcoming.map((ev) => ev.type).filter(Boolean))
+          );
+          setAllTypes(types);
+
+          setError(null);
+        } catch (err) {
+          setError("Failed to load events");
+        } finally {
+          setLoading(false);
         }
-        );
-        const now = new Date();
-        const upcoming = res.data.result.filter((event) =>
-          isAfter(parseISO(event.date), now)
-        );
-        setEvents(upcoming);
-        // Extract unique event types for the filter dropdown
-        const types = Array.from(
-          new Set(upcoming.map((ev) => ev.type).filter(Boolean))
-        );
-        setAllTypes(types);
-        setError(null);
-      } catch (err) {
-        setError("Failed to load events");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEvents();
+      };
+
+      fetchEvents();
+    }, 500); // Debounce for 500ms
+
+    return () => clearTimeout(delayDebounce);
   }, [search]);
 
-  // Filter events by selected type
   const filteredEvents = eventType
     ? events.filter((event) => event.type === eventType)
     : events;
@@ -52,6 +57,7 @@ const UpcomingEvents = () => {
     return (
       <p className="text-center py-10 text-gray-500">Loading events...</p>
     );
+
   if (error)
     return <p className="text-center py-10 text-red-500">{error}</p>;
 
@@ -60,6 +66,7 @@ const UpcomingEvents = () => {
       <h2 className="text-3xl pt-10 font-extrabold mb-8 text-center text-emerald-700 dark:text-emerald-300 tracking-tight">
         Upcoming Events
       </h2>
+
       <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
         <input
           type="text"
@@ -82,6 +89,7 @@ const UpcomingEvents = () => {
           ))}
         </select>
       </div>
+
       {filteredEvents.length === 0 ? (
         <p className="text-center text-gray-500">
           No upcoming events available.
@@ -106,7 +114,8 @@ const UpcomingEvents = () => {
                   {event.title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-1">
-                  <span className="font-semibold">Location:</span> {event.location}
+                  <span className="font-semibold">Location:</span>{" "}
+                  {event.location}
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 mb-1">
                   <span className="font-semibold">Type:</span> {event.type}

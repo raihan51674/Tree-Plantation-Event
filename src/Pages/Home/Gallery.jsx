@@ -1,119 +1,197 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { FaLeaf, FaChevronLeft, FaChevronRight, FaTimes, FaSearchPlus } from "react-icons/fa";
 
 const images = [
   {
-    src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    alt: "Tree Plantation 1",
-    caption: "Community Tree Plantation Day",
+    src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+    alt: "Community tree planting event",
+    caption: "Annual Community Planting Day - 2023",
+    location: "Central Park, New York",
+    date: "April 22, 2023",
+    treesPlanted: "500+"
   },
   {
     src: "https://i.ibb.co/qYhp5B4t/Adobe-Stock-1176063871-Preview.jpg",
-    alt: "Tree Plantation 2",
-    caption: "Volunteers planting saplings",
+    alt: "Volunteers planting saplings",
+    caption: "Youth Volunteers in Action",
+    location: "Green Valley, California",
+    date: "March 15, 2023",
+    treesPlanted: "1,200+"
   },
   {
     src: "https://i.ibb.co/qYJm84GK/Adobe-Stock-313096915-Preview.jpg",
-    alt: "Tree Plantation 3",
-    caption: "Green forest growth",
+    alt: "Forest restoration project",
+    caption: "Forest Restoration Initiative",
+    location: "Pacific Northwest",
+    date: "May 5, 2023",
+    treesPlanted: "5,000+"
   },
   {
     src: "https://i.ibb.co/b5KmsK48/Adobe-Stock-583582518-Preview.jpg",
-    alt: "Tree Plantation 4",
-    caption: "Beautiful young tree",
+    alt: "Tree care workshop",
+    caption: "Tree Care & Maintenance Workshop",
+    location: "Chicago Botanical Gardens",
+    date: "June 10, 2023",
+    treesPlanted: "300+"
   },
   {
-    src: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80",
-    alt: "Tree Plantation 5",
-    caption: "Plantation site after rain",
+    src: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80",
+    alt: "School planting program",
+    caption: "School Green Initiative Program",
+    location: "Austin, Texas",
+    date: "February 28, 2023",
+    treesPlanted: "750+"
   },
   {
     src: "https://i.ibb.co/HfXF0JYd/Adobe-Stock-714346813-Preview.jpg",
-    alt: "Tree Plantation 6",
-    caption: "Hands holding small sapling",
+    alt: "Corporate volunteering event",
+    caption: "Corporate Volunteering Day",
+    location: "Silicon Valley",
+    date: "July 22, 2023",
+    treesPlanted: "2,000+"
   },
+  {
+    src: "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=1200&q=80",
+    alt: "Urban greening project",
+    caption: "Urban Greening Initiative",
+    location: "Downtown Los Angeles",
+    date: "August 5, 2023",
+    treesPlanted: "1,500+"
+  },
+  {
+    src: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=80",
+    alt: "Coastal restoration project",
+    caption: "Coastal Ecosystem Restoration",
+    location: "Florida Coastline",
+    date: "September 12, 2023",
+    treesPlanted: "3,200+"
+  },
+  {
+    src: "https://images.unsplash.com/photo-1476231682828-37e571bc172f?auto=format&fit=crop&w=1200&q=80",
+    alt: "Native species planting",
+    caption: "Native Species Reforestation",
+    location: "Rocky Mountains",
+    date: "October 8, 2023",
+    treesPlanted: "4,500+"
+  }
 ];
 
 const Gallery = () => {
   const [selectedImgIndex, setSelectedImgIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [filter, setFilter] = useState("all");
 
-  const selectedImg = selectedImgIndex !== null ? images[selectedImgIndex] : null;
+  const filteredImages = filter === "all" 
+    ? images 
+    : images.filter(img => img.caption.toLowerCase().includes(filter.toLowerCase()));
 
-  // Close modal on Escape key
+  const selectedImg = selectedImgIndex !== null ? filteredImages[selectedImgIndex] : null;
+
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        setSelectedImgIndex(null);
-      }
-      if (e.key === "ArrowRight" && selectedImgIndex !== null) {
-        goNext();
-      }
-      if (e.key === "ArrowLeft" && selectedImgIndex !== null) {
-        goPrev();
-      }
+      if (e.key === "Escape") setSelectedImgIndex(null);
+      if (e.key === "ArrowRight" && selectedImgIndex !== null) goNext();
+      if (e.key === "ArrowLeft" && selectedImgIndex !== null) goPrev();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImgIndex]);
 
-  // Navigate to next image
   const goNext = () => {
-    setSelectedImgIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setSelectedImgIndex(prev => (prev === filteredImages.length - 1 ? 0 : prev + 1));
     setIsLoading(true);
   };
 
-  // Navigate to previous image
   const goPrev = () => {
-    setSelectedImgIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setSelectedImgIndex(prev => (prev === 0 ? filteredImages.length - 1 : prev - 1));
     setIsLoading(true);
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-16 bg-gradient-to-br from-green-50 via-white to-green-100 dark:from-gray-900 dark:via-gray-950 dark:to-green-950 min-h-screen transition-colors duration-300">
-      <h2 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-700 via-lime-500 to-green-400 dark:from-green-200 dark:via-lime-400 dark:to-green-500 mb-16 text-center tracking-wider drop-shadow-lg">
-        Our Tree Plantation Gallery
-      </h2>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40]">
+      {/* Header */}
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center justify-center px-6 py-2 bg-[#2E7D32] text-white rounded-full text-sm font-semibold mb-6 shadow-lg">
+          <FaLeaf className="mr-2" /> Our Green Journey
+        </div>
+        <h2 className="text-4xl md:text-5xl font-extrabold text-[#2E7D32] dark:text-[#81C784] mb-4">
+          Tree Plantation <span className="text-[#4FC3F7] dark:text-[#4FC3F7]">Gallery</span>
+        </h2>
+        <p className="max-w-2xl mx-auto text-lg text-[#1B5E20] dark:text-[#C8E6C9]">
+          Explore our impactful tree planting events and witness the transformation we're creating together.
+        </p>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap justify-center gap-3 mb-10">
+        <button
+          onClick={() => setFilter("all")}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filter === "all" ? 'bg-[#2E7D32] text-white' : 'bg-white/80 dark:bg-gray-800/80 text-[#2E7D32] dark:text-[#81C784] hover:bg-[#2E7D32]/10 dark:hover:bg-[#81C784]/10'}`}
+        >
+          All Events
+        </button>
+        <button
+          onClick={() => setFilter("community")}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filter === "community" ? 'bg-[#2E7D32] text-white' : 'bg-white/80 dark:bg-gray-800/80 text-[#2E7D32] dark:text-[#81C784] hover:bg-[#2E7D32]/10 dark:hover:bg-[#81C784]/10'}`}
+        >
+          Community Events
+        </button>
+        <button
+          onClick={() => setFilter("workshop")}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filter === "workshop" ? 'bg-[#2E7D32] text-white' : 'bg-white/80 dark:bg-gray-800/80 text-[#2E7D32] dark:text-[#81C784] hover:bg-[#2E7D32]/10 dark:hover:bg-[#81C784]/10'}`}
+        >
+          Workshops
+        </button>
+        <button
+          onClick={() => setFilter("corporate")}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filter === "corporate" ? 'bg-[#2E7D32] text-white' : 'bg-white/80 dark:bg-gray-800/80 text-[#2E7D32] dark:text-[#81C784] hover:bg-[#2E7D32]/10 dark:hover:bg-[#81C784]/10'}`}
+        >
+          Corporate Events
+        </button>
+      </div>
 
       {/* Image Grid */}
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-        {images.map(({ src, alt, caption }, idx) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredImages.map(({ src, alt, caption, location, date, treesPlanted }, idx) => (
           <div
             key={idx}
-            className="relative rounded-3xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:scale-105 hover:shadow-green-200 hover:z-10 bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg border border-green-100 dark:border-green-900"
+            className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
             onClick={() => setSelectedImgIndex(idx)}
-            role="button"
-            tabIndex={0}
-            aria-label={`Open image: ${caption}`}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") setSelectedImgIndex(idx);
-            }}
           >
-            <img
-              src={src}
-              alt={alt}
-              loading="lazy"
-              className="w-full h-48 xs:h-56 sm:h-64 md:h-72 lg:h-80 object-cover transition-all duration-500 group-hover:scale-110 group-hover:blur-[2px]"
-              onLoad={() => setIsLoading(false)}
-            />
-            {/* Glass overlay with caption on hover */}
-            <div className="absolute inset-0 flex items-end p-6 bg-gradient-to-t from-green-900/80 via-transparent to-transparent dark:from-green-950/90 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <div className="w-full bg-white/30 dark:bg-gray-900/40 backdrop-blur-md rounded-xl px-4 py-2 shadow-lg">
-                <p className="text-green-900 dark:text-green-200 font-bold text-lg tracking-wide text-center drop-shadow-md">{caption}</p>
+            <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden">
+              <img
+                src={src}
+                alt={alt}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2E7D32]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                <h3 className="text-white text-xl font-bold mb-2">{caption}</h3>
+                <div className="flex items-center text-white/90 text-sm mb-1">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {location}
+                </div>
+                <div className="flex items-center text-white/90 text-sm mb-3">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {date}
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 inline-flex items-center text-white font-medium">
+                  <FaLeaf className="mr-2" />
+                  {treesPlanted} Trees Planted
+                </div>
+              </div>
+              {/* Zoom icon */}
+              <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
+                <FaSearchPlus className="text-[#2E7D32] dark:text-[#81C784]" />
               </div>
             </div>
-            {/* Floating leaf icon */}
-            <span className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-500 text-green-400 dark:text-green-300 text-2xl drop-shadow-lg">
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-                <path
-                  d="M12 2C7.03 2 2.73 6.11 2.05 11.02c-.09.67.46 1.26 1.13 1.26h.01c.6 0 1.09-.45 1.16-1.04C4.94 7.14 8.13 4 12 4s7.06 3.14 7.65 7.24c.07.59.56 1.04 1.16 1.04h.01c.67 0 1.22-.59 1.13-1.26C21.27 6.11 16.97 2 12 2z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M12 6c-3.31 0-6 2.69-6 6 0 4.97 6 10 6 10s6-5.03 6-10c0-3.31-2.69-6-6-6zm0 13.13C10.14 16.98 6 12.98 6 12c0-3.31 2.69-6 6-6s6 2.69 6 6c0 .98-4.14 4.98-6 7.13z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
           </div>
         ))}
       </div>
@@ -121,80 +199,96 @@ const Gallery = () => {
       {/* Lightbox Modal */}
       {selectedImg && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-50 p-2 sm:p-4 bg-gradient-to-br from-green-900/90 via-black/80 to-green-800/90 dark:from-gray-950/95 dark:via-black/90 dark:to-green-950/95 backdrop-blur-[6px] transition-all duration-300"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2E7D32]/95 dark:bg-gray-950/95 backdrop-blur-lg transition-opacity duration-300"
           onClick={() => setSelectedImgIndex(null)}
-          aria-modal="true"
-          role="dialog"
-          aria-labelledby="modal-caption"
         >
           <div
-            className="relative w-full max-w-lg sm:max-w-2xl md:max-w-3xl lg:max-w-4xl rounded-3xl overflow-hidden shadow-2xl bg-white/20 dark:bg-gray-900/40 backdrop-blur-2xl border border-green-200 dark:border-green-900 ring-4 ring-green-300/30 dark:ring-green-900/40"
-            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden"
+            onClick={e => e.stopPropagation()}
           >
+            {/* Loading indicator */}
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-green-800/60 dark:bg-green-950/80 z-10">
-                <svg
-                  className="animate-spin h-12 w-12 text-green-400 dark:text-green-300"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  aria-label="Loading spinner"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8H4z"
-                  ></path>
-                </svg>
+              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-10">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#2E7D32] dark:border-[#81C784]"></div>
               </div>
             )}
-            <img
-              src={selectedImg.src}
-              alt={selectedImg.alt}
-              className="w-full max-h-[40vh] xs:max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] object-contain select-none transition-all duration-500 rounded-t-3xl shadow-xl"
-              onLoad={() => setIsLoading(false)}
-              draggable={false}
-              style={{ boxShadow: "0 8px 32px 0 rgba(34,197,94,0.25)" }}
-            />
-            <p
-              id="modal-caption"
-              className="text-green-900 dark:text-green-100 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md px-8 py-4 text-center text-2xl font-bold tracking-wider drop-shadow-lg rounded-b-3xl"
-            >
-              {selectedImg.caption}
-            </p>
 
-            {/* Close Button */}
-            <button
-              onClick={() => setSelectedImgIndex(null)}
-              className="absolute top-4 right-4 text-green-900 dark:text-green-100 bg-white/70 dark:bg-gray-900/70 hover:bg-green-400/80 dark:hover:bg-green-700/80 hover:text-white rounded-full p-2 text-3xl font-black shadow-lg transition-all duration-300"
-              aria-label="Close gallery modal"
-            >
-              &times;
-            </button>
+            {/* Image */}
+            <div className="relative">
+              <img
+                src={selectedImg.src}
+                alt={selectedImg.alt}
+                className="w-full max-h-[60vh] object-contain"
+                onLoad={() => setIsLoading(false)}
+              />
+              
+              {/* Navigation buttons */}
+              <button
+                onClick={goPrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/90 hover:bg-[#2E7D32] hover:text-white p-3 rounded-full shadow-lg transition-all duration-300"
+                aria-label="Previous image"
+              >
+                <FaChevronLeft className="text-[#2E7D32] dark:text-[#81C784] hover:text-white" />
+              </button>
+              <button
+                onClick={goNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-900/90 hover:bg-[#2E7D32] hover:text-white p-3 rounded-full shadow-lg transition-all duration-300"
+                aria-label="Next image"
+              >
+                <FaChevronRight className="text-[#2E7D32] dark:text-[#81C784] hover:text-white" />
+              </button>
+            </div>
 
-            {/* Prev/Next Buttons */}
-            <button
-              onClick={goPrev}
-              className="absolute top-1/2 left-4 -translate-y-1/2 text-green-900 dark:text-green-100 bg-white/70 dark:bg-gray-900/70 hover:bg-green-400/80 dark:hover:bg-green-700/80 hover:text-white rounded-full p-2 text-3xl font-black shadow-lg transition-all duration-300"
-              aria-label="Previous image"
-            >
-              &#10094;
-            </button>
-            <button
-              onClick={goNext}
-              className="absolute top-1/2 right-4 -translate-y-1/2 text-green-900 dark:text-green-100 bg-white/70 dark:bg-gray-900/70 hover:bg-green-400/80 dark:hover:bg-green-700/80 hover:text-white rounded-full p-2 text-3xl font-black shadow-lg transition-all duration-300"
-              aria-label="Next image"
-            >
-              &#10095;
-            </button>
+            {/* Caption area */}
+            <div className="p-6 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-2xl font-bold text-[#2E7D32] dark:text-[#81C784]">{selectedImg.caption}</h3>
+                <button
+                  onClick={() => setSelectedImgIndex(null)}
+                  className="text-gray-500 hover:text-[#2E7D32] dark:hover:text-[#81C784] transition-colors"
+                  aria-label="Close gallery"
+                >
+                  <FaTimes className="text-xl" />
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="flex items-center">
+                  <div className="bg-[#2E7D32]/10 dark:bg-[#81C784]/10 p-3 rounded-full mr-4">
+                    <svg className="w-6 h-6 text-[#2E7D32] dark:text-[#81C784]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Location</p>
+                    <p className="font-medium text-gray-800 dark:text-gray-200">{selectedImg.location}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <div className="bg-[#2E7D32]/10 dark:bg-[#81C784]/10 p-3 rounded-full mr-4">
+                    <svg className="w-6 h-6 text-[#2E7D32] dark:text-[#81C784]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Date</p>
+                    <p className="font-medium text-gray-800 dark:text-gray-200">{selectedImg.date}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <div className="bg-[#2E7D32]/10 dark:bg-[#81C784]/10 p-3 rounded-full mr-4">
+                    <FaLeaf className="w-6 h-6 text-[#2E7D32] dark:text-[#81C784]" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Impact</p>
+                    <p className="font-medium text-gray-800 dark:text-gray-200">{selectedImg.treesPlanted} Trees Planted</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -1,203 +1,170 @@
-import {
-  FaEnvelope,
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaEnvelope, FaFacebookF,FaPaperPlane, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaPhoneAlt, FaTwitter, FaTree, FaLeaf } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-green-50 via-green-100 to-green-200 text-green-950 dark:bg-gradient-to-br dark:from-green-950 dark:via-green-900 dark:to-green-800 dark:text-white relative overflow-hidden">
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          background:
-            "radial-gradient(circle at 70% 30%, #34d399 0%, transparent 70%)",
-        }}
-      />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14 md:py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10 relative z-10">
-        {/* Logo & Description */}
-        <div className="backdrop-blur-md bg-white/60 dark:bg-white/5 rounded-2xl shadow-lg p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
-          <h2 className="text-4xl font-extrabold mb-2 flex items-center gap-3 tracking-tight">
-            <span className="text-green-600 dark:text-green-400 text-4xl">🌳</span>
-            <span className="bg-gradient-to-r from-green-600 to-green-400 dark:from-green-400 dark:to-green-200 bg-clip-text text-transparent">
-              Plantation
-            </span>
-          </h2>
-          <p className="text-green-900 dark:text-green-100 text-base leading-relaxed">
-            Dedicated to making the earth greener, one tree at a time.
-            <br />
-            Join us in protecting nature and promoting sustainability.
-          </p>
-        </div>
+    <footer className="relative bg-gradient-to-b from-[#E8F5E9] to-[#B2DFDB] dark:from-[#1B5E20] dark:to-[#004D40] overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#4FC3F7]/10 rounded-full blur-3xl animate-floatSlow" />
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#2E7D32]/20 rounded-full blur-3xl animate-floatSlow animation-delay-2000" />
+        <FaLeaf className="absolute top-1/4 left-1/4 text-[#2E7D32]/10 dark:text-[#81C784]/10 text-9xl -rotate-12" />
+        <FaTree className="absolute bottom-10 right-1/4 text-[#2E7D32]/10 dark:text-[#81C784]/10 text-9xl rotate-6" />
+      </div>
 
-        {/* Quick Links */}
-        <div className="backdrop-blur-md bg-white/60 dark:bg-white/5 rounded-2xl shadow-lg p-4 sm:p-6">
-          <h3 className="font-semibold text-2xl mb-5 text-green-600 dark:text-green-300 tracking-wide">
-            Quick Links
-          </h3>
-          <ul className="space-y-3">
-            <li>
-              <a
-                href="#home"
-                className="hover:text-green-600 dark:hover:text-green-300 transition font-medium"
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href="#about"
-                className="hover:text-green-600 dark:hover:text-green-300 transition font-medium"
-              >
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="#projects"
-                className="hover:text-green-600 dark:hover:text-green-300 transition font-medium"
-              >
-                Projects
-              </a>
-            </li>
-            <li>
-              <a
-                href="#events"
-                className="hover:text-green-600 dark:hover:text-green-300 transition font-medium"
-              >
-                Events
-              </a>
-            </li>
-            <li>
-              <a
-                href="#contact"
-                className="hover:text-green-600 dark:hover:text-green-300 transition font-medium"
-              >
-                Contact
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* About Section */}
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-[#2E7D32]/20 dark:border-[#81C784]/20">
+            <div className="flex items-center mb-4">
+              <div className="bg-[#2E7D32] text-white p-3 rounded-xl mr-3">
+                <FaTree className="text-2xl" />
+              </div>
+              <h2 className="text-2xl font-bold text-[#2E7D32] dark:text-[#81C784]">
+                Green<span className="text-[#4FC3F7]">Earth</span>
+              </h2>
+            </div>
+            <p className="text-[#1B5E20] dark:text-[#C8E6C9] mb-4">
+              Committed to restoring our planet's green cover through community-driven tree plantation initiatives.
+            </p>
+            <div className="flex space-x-4 text-[#2E7D32] dark:text-[#81C784] text-xl">
+              {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className="hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] transition-transform hover:scale-110"
+                  aria-label={`Follow us on ${Icon.toString().replace('Fa', '')}`}
+                >
+                  <Icon />
+                </a>
+              ))}
+            </div>
+          </div>
 
-        {/* Contact Info */}
-        <div className="backdrop-blur-md bg-white/60 dark:bg-white/5 rounded-2xl shadow-lg p-4 sm:p-6">
-          <h3 className="font-semibold text-2xl mb-5 text-green-600 dark:text-green-300 tracking-wide">
-            Contact Us
-          </h3>
-          <ul className="space-y-4 text-green-900 dark:text-green-100">
-            <li className="flex items-center gap-3">
-              <span className="p-2 bg-green-200 dark:bg-green-900 rounded-full">
-                <FaMapMarkerAlt className="text-green-600 dark:text-green-400" />
-              </span>
-              <span>123 Green Street, Dhaka, Bangladesh</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="p-2 bg-green-200 dark:bg-green-900 rounded-full">
-                <FaPhoneAlt className="text-green-600 dark:text-green-400" />
-              </span>
-              <a
-                href="tel:+8801234567890"
-                className="hover:text-green-600 dark:hover:text-green-300 transition"
-              >
-                +880 1234 567 890
-              </a>
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="p-2 bg-green-200 dark:bg-green-900 rounded-full">
-                <FaEnvelope className="text-green-600 dark:text-green-400" />
-              </span>
-              <a
-                href="mailto:info@treeplantation.com"
-                className="hover:text-green-600 dark:hover:text-green-300 transition"
-              >
-                info@treeplantation.com
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Newsletter & Social Media */}
-        <div className="backdrop-blur-md bg-white/60 dark:bg-white/5 rounded-2xl shadow-lg p-4 sm:p-6 flex flex-col justify-between">
-          <div>
-            <h3 className="font-semibold text-2xl mb-5 text-green-600 dark:text-green-300 tracking-wide">
-              Subscribe to Newsletter
+          {/* Quick Links */}
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-[#2E7D32]/20 dark:border-[#81C784]/20">
+            <h3 className="text-xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-4 flex items-center">
+              <span className="w-3 h-3 bg-[#4FC3F7] rounded-full mr-2"></span>
+              Quick Links
             </h3>
-            <form className="flex flex-col gap-2 sm:gap-3">
+            <ul className="space-y-3">
+              {[
+                { name: "Home", href: "#" },
+                { name: "About Us", href: "#about" },
+                { name: "Our Projects", href: "#projects" },
+                { name: "Events", href: "#events" },
+                { name: "Volunteer", href: "#volunteer" },
+                { name: "Contact", href: "#contact" }
+              ].map((item, i) => (
+                <li key={i}>
+                  <a
+                    href={item.href}
+                    className="text-[#1B5E20] dark:text-[#C8E6C9] hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] transition-colors flex items-center"
+                  >
+                    <span className="w-2 h-2 bg-[#2E7D32] rounded-full mr-2"></span>
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-[#2E7D32]/20 dark:border-[#81C784]/20">
+            <h3 className="text-xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-4 flex items-center">
+              <span className="w-3 h-3 bg-[#4FC3F7] rounded-full mr-2"></span>
+              Contact Us
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <div className="bg-[#2E7D32]/10 dark:bg-[#81C784]/10 p-2 rounded-lg mr-3">
+                  <FaMapMarkerAlt className="text-[#2E7D32] dark:text-[#81C784]" />
+                </div>
+                <span className="text-[#1B5E20] dark:text-[#C8E6C9]">
+                  123 Green Avenue, Eco District<br />
+                  Dhaka 1207, Bangladesh
+                </span>
+              </li>
+              <li className="flex items-center">
+                <div className="bg-[#2E7D32]/10 dark:bg-[#81C784]/10 p-2 rounded-lg mr-3">
+                  <FaPhoneAlt className="text-[#2E7D32] dark:text-[#81C784]" />
+                </div>
+                <a href="tel:+8801234567890" className="text-[#1B5E20] dark:text-[#C8E6C9] hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] transition-colors">
+                  +880 1234 567 890
+                </a>
+              </li>
+              <li className="flex items-center">
+                <div className="bg-[#2E7D32]/10 dark:bg-[#81C784]/10 p-2 rounded-lg mr-3">
+                  <FaEnvelope className="text-[#2E7D32] dark:text-[#81C784]" />
+                </div>
+                <a href="mailto:info@greenearth.org" className="text-[#1B5E20] dark:text-[#C8E6C9] hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] transition-colors">
+                  info@greenearth.org
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div className="bg-white/80 dark:bg-[#1B5E20]/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-[#2E7D32]/20 dark:border-[#81C784]/20">
+            <h3 className="text-xl font-bold text-[#2E7D32] dark:text-[#81C784] mb-4 flex items-center">
+              <span className="w-3 h-3 bg-[#4FC3F7] rounded-full mr-2"></span>
+              Newsletter
+            </h3>
+            <p className="text-[#1B5E20] dark:text-[#C8E6C9] mb-4">
+              Subscribe to get updates on our latest plantation drives and environmental initiatives.
+            </p>
+            <form className="space-y-3">
               <input
                 type="email"
                 placeholder="Your email address"
-                className="p-2 sm:p-3 rounded-lg text-green-900 dark:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 rounded-lg border border-[#2E7D32]/30 dark:border-[#81C784]/30 focus:ring-2 focus:ring-[#4FC3F7] focus:border-[#4FC3F7] transition-all dark:bg-[#1B5E20]/50 dark:text-white"
                 required
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-600 to-green-400 dark:from-green-400 dark:to-green-300 hover:from-green-400 hover:to-green-600 dark:hover:from-green-300 dark:hover:to-green-400 transition text-green-900 font-bold py-2 sm:py-3 rounded-lg shadow-md"
+                className="w-full px-4 py-2 bg-gradient-to-r from-[#2E7D32] to-[#4FC3F7] hover:from-[#4FC3F7] hover:to-[#2E7D32] text-white font-medium rounded-lg shadow transition-all flex items-center justify-center"
               >
+                <FaPaperPlane className="mr-2" />
                 Subscribe
               </button>
             </form>
           </div>
-          <div className="mt-6 sm:mt-8 flex space-x-4 sm:space-x-5 text-green-600 dark:text-green-300 text-xl sm:text-2xl">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="hover:text-green-900 dark:hover:text-white transition hover:scale-110"
-            >
-              <FaFacebookF />
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-[#2E7D32]/30 dark:border-[#81C784]/30 my-8"></div>
+
+        {/* Copyright */}
+        <div className="flex flex-col md:flex-row justify-between items-center text-center">
+          <p className="text-[#1B5E20] dark:text-[#C8E6C9] text-sm mb-4 md:mb-0">
+            &copy; {new Date().getFullYear()} GreenEarth Initiative. All rights reserved.
+          </p>
+          <div className="flex space-x-6">
+            <a href="#" className="text-[#1B5E20] dark:text-[#C8E6C9] hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] text-sm transition-colors">
+              Privacy Policy
             </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-              className="hover:text-green-900 dark:hover:text-white transition hover:scale-110"
-            >
-              <FaTwitter />
+            <a href="#" className="text-[#1B5E20] dark:text-[#C8E6C9] hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] text-sm transition-colors">
+              Terms of Service
             </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="hover:text-green-900 dark:hover:text-white transition hover:scale-110"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="hover:text-green-900 dark:hover:text-white transition hover:scale-110"
-            >
-              <FaLinkedinIn />
+            <a href="#" className="text-[#1B5E20] dark:text-[#C8E6C9] hover:text-[#4FC3F7] dark:hover:text-[#4FC3F7] text-sm transition-colors">
+              Sitemap
             </a>
           </div>
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <hr className="border-green-300 dark:border-green-700 opacity-40 my-6 sm:my-8" />
-      </div>
-
-      {/* Bottom copyright */}
-      <div className="bg-green-100/80 dark:bg-green-950/80 text-green-700 dark:text-green-300 text-center py-4 sm:py-5 text-xs sm:text-sm font-medium tracking-wide relative z-10">
-        &copy; {new Date().getFullYear()}{" "}
-        <span className="font-bold text-green-600 dark:text-green-400">TreePlantation</span>. All rights
-        reserved.
-        <br />
-        <span className="text-green-800 dark:text-green-200">
-          Designed with{" "}
-          <span className="text-red-500 dark:text-red-400">♥</span> by Md. Raihan Islam
-        </span>
-      </div>
+      {/* Animation Keyframes */}
+      <style jsx>{`
+        @keyframes floatSlow {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(2deg); }
+        }
+        .animate-floatSlow {
+          animation: floatSlow 8s ease-in-out infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+      `}</style>
     </footer>
   );
 };
